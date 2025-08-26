@@ -3,6 +3,7 @@ import os
 from setuptools import setup
 from setuptools import Extension
 import distutils.command.clean
+
 try:
     from Cython.Build import cythonize
     has_cython = True
@@ -20,6 +21,13 @@ if __name__ == "__main__":
 
     with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
         README = readme.read()
+
+    setup_requires = []
+    import sys
+    if sys.version_info > (3, 10):
+        setup_requires.append("cython>=3.0")
+    else:
+        setup_requires.append("cython>=0.29,<3.0")
 
     setup(
         name="btdht",
@@ -45,6 +53,7 @@ if __name__ == "__main__":
             'Topic :: Software Development :: Libraries :: Python Modules',
             'Topic :: Communications :: File Sharing'
         ],
+        setup_requires=setup_requires,
         install_requires=["datrie >= 0.7", "netaddr >= 0.7.12", "six >= 1.8"],
         url='https://github.com/nitmir/btdht/',
         download_url="https://github.com/nitmir/btdht/releases/latest",
